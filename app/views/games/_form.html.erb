@@ -52,6 +52,18 @@
     </div>
   </div>
 
+  <div>
+    <%= f.label :genre_ids, "Genres", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <% Genre.order(:name).each do |genre| %>
+        <label class="flex items-center gap-2 text-sm text-gray-700">
+          <%= check_box_tag "game[genre_ids][]", genre.id, game.genres.include?(genre), id: "game_genre_#{genre.id}" %>
+          <%= genre.name %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
   <div class="grid grid-cols-3 gap-4">
     <div>
       <%= f.label :complexity, "Complexity (1–5)", class: "block text-sm font-medium text-gray-700" %>
