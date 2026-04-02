@@ -27,9 +27,9 @@ RSpec.describe "Game genre tagging", type: :request do
     it "replaces genre associations" do
       strategy = Genre.create!(name: "Strategy")
       party    = Genre.create!(name: "Party")
-      game = Game.create!(name: "Catan", genre_ids: [strategy.id])
+      game = Game.create!(name: "Catan", genre_ids: [ strategy.id ])
 
-      patch "/games/#{game.id}", params: { game: { genre_ids: [party.id] } }
+      patch "/games/#{game.id}", params: { game: { genre_ids: [ party.id ] } }
 
       expect(game.reload.genres).to contain_exactly(party)
     end
@@ -53,7 +53,7 @@ RSpec.describe "Game genre tagging", type: :request do
       strategy = Genre.create!(name: "Strategy")
       party    = Genre.create!(name: "Party")
 
-      post "/games", params: { game: { name: "Catan", genre_ids: [strategy.id, party.id] } }
+      post "/games", params: { game: { name: "Catan", genre_ids: [ strategy.id, party.id ] } }
 
       game = Game.last
       expect(game.genres).to contain_exactly(strategy, party)
