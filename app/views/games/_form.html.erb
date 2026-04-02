@@ -1,0 +1,74 @@
+<%= form_with model: game, class: "space-y-4" do |f| %>
+  <% if game.errors.any? %>
+    <div class="bg-red-50 border border-red-200 rounded p-4 text-red-700">
+      <ul class="list-disc list-inside">
+        <% game.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_field :name, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" %>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :min_players, "Min Players", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :min_players, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :max_players, "Max Players", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :max_players, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :min_playtime, "Min Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :min_playtime, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :max_playtime, "Max Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :max_playtime, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_area :description, rows: 3, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :condition, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :condition, Game.conditions.keys.map { |k| [k.humanize, k] }, { include_blank: "— select —" }, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :bgg_url, "BGG URL", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.url_field :bgg_url, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div>
+      <%= f.label :complexity, "Complexity (1–5)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :complexity, min: 1, max: 5, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :enjoyment, "Enjoyment (1–5)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :enjoyment, min: 1, max: 5, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :times_played, "Times Played", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :times_played, min: 0, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    </div>
+  </div>
+
+  <div class="flex gap-3 pt-2">
+    <%= f.submit class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+    <%= link_to "Cancel", games_path, class: "px-4 py-2 text-gray-600 hover:underline" %>
+  </div>
+<% end %>
