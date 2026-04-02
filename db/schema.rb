@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_02_075401) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_02_080607) do
+  create_table "game_genres", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "game_id", null: false
+    t.integer "genre_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_game_genres_on_game_id"
+    t.index ["genre_id"], name: "index_game_genres_on_genre_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "bgg_url"
     t.integer "complexity"
@@ -33,4 +42,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_075401) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
+
+  add_foreign_key "game_genres", "games"
+  add_foreign_key "game_genres", "genres"
 end

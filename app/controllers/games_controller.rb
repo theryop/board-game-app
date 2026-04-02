@@ -2,7 +2,7 @@ class GamesController < ApplicationController
   before_action :set_game, only: %i[edit update destroy]
 
   def index
-    @games = Game.order(:name)
+    @games = Game.includes(:genres).order(:name)
   end
 
   def new
@@ -44,7 +44,7 @@ class GamesController < ApplicationController
     params.require(:game).permit(
       :name, :min_players, :max_players, :description,
       :times_played, :bgg_url, :condition, :complexity,
-      :min_playtime, :max_playtime, :enjoyment
+      :min_playtime, :max_playtime, :enjoyment, genre_ids: []
     )
   end
 end

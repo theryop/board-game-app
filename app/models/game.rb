@@ -1,4 +1,7 @@
 class Game < ApplicationRecord
+  has_many :game_genres, dependent: :destroy
+  has_many :genres, through: :game_genres
+
   enum :condition, { mint: 0, good: 1, fair: 2, poor: 3, damaged: 4 }
 
   validates :name, presence: true
