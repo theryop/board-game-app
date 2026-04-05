@@ -39,6 +39,14 @@ RSpec.describe "Games", type: :request do
       expect(response.body).to include('name="genre[name]"')
       expect(response.body).to include('name="context"')
     end
+
+    it "renders a delete button next to each genre in the game form" do
+      create(:genre, name: "Strategy")
+
+      get "/games/new"
+
+      expect(response.body).to include("Delete Strategy")
+    end
   end
 
   describe "GET /games/:id/edit" do
