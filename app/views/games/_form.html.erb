@@ -54,14 +54,22 @@
 
   <div>
     <%= f.label :genre_ids, "Genres", class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-3">
+    <div id="genre_form_list" class="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-3">
       <% @genres.each do |genre| %>
-        <label class="flex items-center gap-2 text-sm text-gray-700">
+        <label class="flex items-center gap-2 text-sm text-gray-700" id="game_genre_label_<%= genre.id %>">
           <%= check_box_tag "game[genre_ids][]", genre.id, game.genres.include?(genre), id: "game_genre_#{genre.id}" %>
           <%= genre.name %>
         </label>
       <% end %>
     </div>
+    <%= form_with url: genres_path, class: "mt-2" do %>
+      <input type="hidden" name="context" value="game_form">
+      <div class="flex gap-1">
+        <%= text_field_tag "genre[name]", nil, placeholder: "New genre", id: "genre_form_add_input", class: "flex-1 border-gray-300 rounded text-sm px-2 py-1" %>
+        <%= submit_tag "Add", class: "bg-indigo-600 text-white px-2 py-1 rounded text-sm hover:bg-indigo-700 cursor-pointer" %>
+      </div>
+      <div id="genre_form_error"></div>
+    <% end %>
   </div>
 
   <div class="grid grid-cols-3 gap-4">

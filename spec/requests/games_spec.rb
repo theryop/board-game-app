@@ -32,6 +32,13 @@ RSpec.describe "Games", type: :request do
       get "/games/new"
       expect(response).to have_http_status(:ok)
     end
+
+    it "renders the add-genre form in the game form" do
+      get "/games/new"
+
+      expect(response.body).to include('name="genre[name]"')
+      expect(response.body).to include('name="context"')
+    end
   end
 
   describe "GET /games/:id/edit" do

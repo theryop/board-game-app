@@ -100,6 +100,28 @@ RSpec.describe "Genres", type: :request do
     end
   end
 
+  describe "POST /genres (turbo_stream, game_form context)" do
+    it "creates the genre and returns a pre-checked checkbox targeting genre_form_list" do
+      expect {
+        post "/genres", params: { genre: { name: "Strategy" }, context: "game_form" }, as: :turbo_stream
+      }.to change(Genre, :count).by(1)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("genre_form_list")
+      expect(response.body).to include("checked")
+      expect(response.body).to include("game[genre_ids][]")
+    end
+
+    it "returns a turbo_stream error when name is blank" do
+      expect {
+        post "/genres", params: { genre: { name: "" }, context: "game_form" }, as: :turbo_stream
+      }.not_to change(Genre, :count)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("can&#39;t be blank").or(include("can't be blank"))
+    end
+  end
+
   describe "GET /genres" do
     it "returns 200" do
       get "/genres"
