@@ -44,7 +44,7 @@
   <div class="grid grid-cols-2 gap-4">
     <div>
       <%= f.label :condition, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.select :condition, Game.conditions.keys.map { |k| [k.humanize, k] }, { include_blank: "— select —" }, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= f.select :condition, condition_options, { include_blank: "— select —" }, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
       <%= f.label :bgg_url, "BGG URL", class: "block text-sm font-medium text-gray-700" %>
