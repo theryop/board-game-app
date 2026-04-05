@@ -263,5 +263,13 @@ RSpec.describe "Games", type: :request do
       expect(response.body).to include('action="/genres"')
       expect(response.body).to include('name="genre[name]"')
     end
+
+    it "renders a delete button next to each genre in the filter panel" do
+      create(:genre, name: "Strategy")
+
+      get "/games"
+
+      expect(response.body).to include("Delete Strategy")
+    end
   end
 end

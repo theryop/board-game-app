@@ -87,6 +87,19 @@ RSpec.describe "Genres", type: :request do
     end
   end
 
+  describe "DELETE /genres/:id (turbo_stream)" do
+    it "destroys the genre and returns a turbo_stream response targeting the genre element" do
+      genre = create(:genre, name: "Strategy")
+
+      expect {
+        delete "/genres/#{genre.id}", as: :turbo_stream
+      }.to change(Genre, :count).by(-1)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("filter_genre_#{genre.id}")
+    end
+  end
+
   describe "GET /genres" do
     it "returns 200" do
       get "/genres"

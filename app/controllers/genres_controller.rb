@@ -37,7 +37,10 @@ class GenresController < ApplicationController
 
   def destroy
     @genre.destroy
-    redirect_to genres_path, notice: "Genre removed."
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to genres_path, notice: "Genre removed." }
+    end
   end
 
   private
