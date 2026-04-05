@@ -2,7 +2,9 @@ class GamesController < ApplicationController
   before_action :set_game, only: %i[edit update destroy]
 
   def index
-    @games = Game.includes(:genres).order(:name)
+    @filter_params = params.permit(:sort, :direction, :condition, :genre_mode, :player_count, :max_playtime, :complexity, :enjoyment, genre_ids: []).to_h.symbolize_keys
+    @games = GameFilter.new(@filter_params).results
+    @genres = Genre.order(:name)
   end
 
   def new
