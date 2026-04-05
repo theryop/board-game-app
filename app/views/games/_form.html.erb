@@ -1,4 +1,7 @@
-<%= form_with model: game, class: "space-y-4" do |f| %>
+<%= form_with model: game, id: "game_form", class: "space-y-4" do |f| %>
+<% end %>
+
+<div class="space-y-4">
   <% if game.errors.any? %>
     <div class="bg-red-50 border border-red-200 rounded p-4 text-red-700">
       <ul class="list-disc list-inside">
@@ -10,54 +13,54 @@
   <% end %>
 
   <div>
-    <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_field :name, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" %>
+    <%= label_tag :name, "Name", class: "block text-sm font-medium text-gray-700" %>
+    <%= text_field_tag "game[name]", game.name, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" %>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :min_players, "Min Players", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :min_players, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :min_players, "Min Players", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[min_players]", game.min_players, min: 1, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
-      <%= f.label :max_players, "Max Players", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :max_players, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :max_players, "Max Players", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[max_players]", game.max_players, min: 1, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :min_playtime, "Min Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :min_playtime, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :min_playtime, "Min Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[min_playtime]", game.min_playtime, min: 1, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
-      <%= f.label :max_playtime, "Max Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :max_playtime, min: 1, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :max_playtime, "Max Playtime (min)", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[max_playtime]", game.max_playtime, min: 1, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
   </div>
 
   <div>
-    <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_area :description, rows: 3, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+    <%= label_tag :description, "Description", class: "block text-sm font-medium text-gray-700" %>
+    <%= text_area_tag "game[description]", game.description, rows: 3, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :condition, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.select :condition, condition_options, { include_blank: "— select —" }, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :condition, "Condition", class: "block text-sm font-medium text-gray-700" %>
+      <%= select_tag "game[condition]", options_for_select([["— select —", ""]] + condition_options, game.condition), form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
-      <%= f.label :bgg_url, "BGG URL", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.url_field :bgg_url, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :bgg_url, "BGG URL", class: "block text-sm font-medium text-gray-700" %>
+      <%= url_field_tag "game[bgg_url]", game.bgg_url, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
   </div>
 
   <div>
-    <%= f.label :genre_ids, "Genres", class: "block text-sm font-medium text-gray-700" %>
+    <%= label_tag :genre_ids, "Genres", class: "block text-sm font-medium text-gray-700" %>
     <div id="genre_form_list" class="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-3">
       <% @genres.each do |genre| %>
         <label class="flex items-center gap-2 text-sm text-gray-700" id="game_genre_label_<%= genre.id %>">
-          <%= check_box_tag "game[genre_ids][]", genre.id, game.genres.include?(genre), id: "game_genre_#{genre.id}" %>
+          <%= check_box_tag "game[genre_ids][]", genre.id, game.genres.include?(genre), id: "game_genre_#{genre.id}", form: "game_form" %>
           <%= genre.name %>
         </label>
       <% end %>
@@ -74,21 +77,21 @@
 
   <div class="grid grid-cols-3 gap-4">
     <div>
-      <%= f.label :complexity, "Complexity (1–5)", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :complexity, min: 1, max: 5, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :complexity, "Complexity (1–5)", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[complexity]", game.complexity, min: 1, max: 5, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
-      <%= f.label :enjoyment, "Enjoyment (1–5)", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :enjoyment, min: 1, max: 5, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :enjoyment, "Enjoyment (1–5)", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[enjoyment]", game.enjoyment, min: 1, max: 5, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
     <div>
-      <%= f.label :times_played, "Times Played", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.number_field :times_played, min: 0, class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
+      <%= label_tag :times_played, "Times Played", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag "game[times_played]", game.times_played, min: 0, form: "game_form", class: "mt-1 block w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
   </div>
 
   <div class="flex gap-3 pt-2">
-    <%= f.submit class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+    <%= submit_tag (game.persisted? ? "Update Game" : "Create Game"), form: "game_form", class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
     <%= link_to "Cancel", games_path, class: "px-4 py-2 text-gray-600 hover:underline" %>
   </div>
-<% end %>
+</div>
