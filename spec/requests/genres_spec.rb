@@ -97,6 +97,7 @@ RSpec.describe "Genres", type: :request do
 
       expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       expect(response.body).to include("filter_genre_#{genre.id}")
+      expect(response.body).to include("game_genre_label_#{genre.id}")
     end
   end
 
