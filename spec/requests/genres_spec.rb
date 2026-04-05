@@ -19,7 +19,7 @@ RSpec.describe "Genres", type: :request do
     end
 
     it "does not create a genre when name is a duplicate" do
-      Genre.create!(name: "Strategy")
+      create(:genre, name: "Strategy")
 
       expect {
         post "/genres", params: { genre: { name: "Strategy" } }
@@ -31,7 +31,7 @@ RSpec.describe "Genres", type: :request do
 
   describe "GET /genres/:id/edit" do
     it "returns 200" do
-      genre = Genre.create!(name: "Party")
+      genre = create(:genre, name: "Party")
       get "/genres/#{genre.id}/edit"
       expect(response).to have_http_status(:ok)
     end
@@ -39,7 +39,7 @@ RSpec.describe "Genres", type: :request do
 
   describe "PATCH /genres/:id" do
     it "updates the genre name and redirects" do
-      genre = Genre.create!(name: "Party")
+      genre = create(:genre, name: "Party")
       patch "/genres/#{genre.id}", params: { genre: { name: "Party Games" } }
       expect(genre.reload.name).to eq("Party Games")
       expect(response).to redirect_to(genres_path)
@@ -48,7 +48,7 @@ RSpec.describe "Genres", type: :request do
 
   describe "DELETE /genres/:id" do
     it "removes the genre and redirects" do
-      genre = Genre.create!(name: "Trivia")
+      genre = create(:genre, name: "Trivia")
       expect {
         delete "/genres/#{genre.id}"
       }.to change(Genre, :count).by(-1)
@@ -63,8 +63,8 @@ RSpec.describe "Genres", type: :request do
     end
 
     it "lists genres by name" do
-      Genre.create!(name: "Wargame")
-      Genre.create!(name: "Abstract")
+      create(:genre, name: "Wargame")
+      create(:genre, name: "Abstract")
 
       get "/genres"
 
