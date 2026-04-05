@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[edit update destroy]
+  before_action :set_genres, only: %i[new create edit update]
 
   def index
     @filter_params = params.permit(:sort, :direction, :condition, :genre_mode, :player_count, :max_playtime, :complexity, :enjoyment, genre_ids: []).to_h.symbolize_keys
@@ -40,6 +41,10 @@ class GamesController < ApplicationController
 
   def set_game
     @game = Game.find(params[:id])
+  end
+
+  def set_genres
+    @genres = Genre.alphabetical_name
   end
 
   def game_params
