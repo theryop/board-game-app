@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe "Game genre tagging", type: :request do
   describe "GET /games" do
     it "displays the genres for each game" do
-      strategy = Genre.create!(name: "Strategy")
-      game = Game.create!(name: "Chess")
+      strategy = create(:genre, name: "Strategy")
+      game = create(:game, name: "Chess")
       game.genres << strategy
 
       get "/games"
@@ -25,9 +25,9 @@ RSpec.describe "Game genre tagging", type: :request do
 
   describe "PATCH /games/:id" do
     it "replaces genre associations" do
-      strategy = Genre.create!(name: "Strategy")
-      party    = Genre.create!(name: "Party")
-      game = Game.create!(name: "Catan", genre_ids: [ strategy.id ])
+      strategy = create(:genre, name: "Strategy")
+      party    = create(:genre, name: "Party")
+      game = create(:game, name: "Catan", genre_ids: [ strategy.id ])
 
       patch "/games/#{game.id}", params: { game: { genre_ids: [ party.id ] } }
 
@@ -37,8 +37,8 @@ RSpec.describe "Game genre tagging", type: :request do
 
   describe "DELETE /genres/:id" do
     it "removes the genre from associated games without destroying the game" do
-      strategy = Genre.create!(name: "Strategy")
-      game = Game.create!(name: "Chess")
+      strategy = create(:genre, name: "Strategy")
+      game = create(:game, name: "Chess")
       game.genres << strategy
 
       delete "/genres/#{strategy.id}"
@@ -50,8 +50,8 @@ RSpec.describe "Game genre tagging", type: :request do
 
   describe "POST /games with genre IDs" do
     it "saves the genre associations" do
-      strategy = Genre.create!(name: "Strategy")
-      party    = Genre.create!(name: "Party")
+      strategy = create(:genre, name: "Strategy")
+      party    = create(:genre, name: "Party")
 
       post "/games", params: { game: { name: "Catan", genre_ids: [ strategy.id, party.id ] } }
 
