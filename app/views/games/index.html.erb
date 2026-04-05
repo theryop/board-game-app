@@ -27,10 +27,13 @@
       </div>
       <div id="genre_filter_list" class="space-y-1 max-h-48 overflow-y-auto">
         <% @genres.each do |genre| %>
-          <label class="flex items-center gap-2 text-sm text-gray-700" id="filter_genre_<%= genre.id %>">
-            <%= check_box_tag "genre_ids[]", genre.id, Array(@filter_params[:genre_ids]).map(&:to_s).include?(genre.id.to_s), id: "filter_genre_checkbox_#{genre.id}", form: "filter_form" %>
-            <%= genre.name %>
-          </label>
+          <div class="flex items-center justify-between gap-1 text-sm text-gray-700" id="filter_genre_<%= genre.id %>">
+            <label class="flex items-center gap-2">
+              <%= check_box_tag "genre_ids[]", genre.id, Array(@filter_params[:genre_ids]).map(&:to_s).include?(genre.id.to_s), id: "filter_genre_checkbox_#{genre.id}", form: "filter_form" %>
+              <%= genre.name %>
+            </label>
+            <%= button_to "Delete #{genre.name}", genre_path(genre), method: :delete, class: "text-gray-400 hover:text-red-500 bg-transparent border-0 p-0 cursor-pointer text-xs leading-none", data: { turbo_confirm: "Delete #{genre.name}? This will remove it from all games." }, aria: { label: "Delete #{genre.name}" } %>
+          </div>
         <% end %>
       </div>
       <%= form_with url: genres_path, class: "mt-2" do %>
