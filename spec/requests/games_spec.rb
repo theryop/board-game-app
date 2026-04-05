@@ -256,5 +256,12 @@ RSpec.describe "Games", type: :request do
       expect(response.body).to include("Alpha")
       expect(response.body).to include("Beta")
     end
+
+    it "renders the add-genre form in the filter panel" do
+      get "/games"
+
+      expect(response.body).to include('action="/genres"')
+      expect(response.body).to include('name="genre[name]"')
+    end
   end
 end

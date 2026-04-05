@@ -1,0 +1,10 @@
+<%= turbo_stream.append "genre_filter_list" do %>
+  <label class="flex items-center gap-2 text-sm text-gray-700" id="filter_genre_<%= @genre.id %>">
+    <%= check_box_tag "genre_ids[]", @genre.id, false, id: "filter_genre_checkbox_#{@genre.id}" %>
+    <%= @genre.name %>
+  </label>
+<% end %>
+<%= turbo_stream.replace "genre_error", "" %>
+<%= turbo_stream.replace "genre_add_input" do %>
+  <input type="text" name="genre[name]" placeholder="New genre" class="flex-1 border-gray-300 rounded text-sm px-2 py-1" id="genre_add_input">
+<% end %>

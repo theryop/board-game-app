@@ -56,6 +56,37 @@ RSpec.describe "Genres", type: :request do
     end
   end
 
+  describe "POST /genres (turbo_stream)" do
+    it "creates the genre and returns a turbo_stream response" do
+      expect {
+        post "/genres", params: { genre: { name: "Strategy" } }, as: :turbo_stream
+      }.to change(Genre, :count).by(1)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("Strategy")
+    end
+
+    it "returns a turbo_stream error when name is blank" do
+      expect {
+        post "/genres", params: { genre: { name: "" } }, as: :turbo_stream
+      }.not_to change(Genre, :count)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("can&#39;t be blank").or(include("can't be blank"))
+    end
+
+    it "returns a turbo_stream error when name is a duplicate" do
+      create(:genre, name: "Strategy")
+
+      expect {
+        post "/genres", params: { genre: { name: "Strategy" } }, as: :turbo_stream
+      }.not_to change(Genre, :count)
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include("already been taken")
+    end
+  end
+
   describe "GET /genres" do
     it "returns 200" do
       get "/genres"
