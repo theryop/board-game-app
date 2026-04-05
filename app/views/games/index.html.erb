@@ -23,14 +23,21 @@
           AND
         </label>
       </div>
-      <div class="space-y-1 max-h-48 overflow-y-auto">
+      <div id="genre_filter_list" class="space-y-1 max-h-48 overflow-y-auto">
         <% @genres.each do |genre| %>
-          <label class="flex items-center gap-2 text-sm text-gray-700">
-            <%= check_box_tag "genre_ids[]", genre.id, Array(@filter_params[:genre_ids]).map(&:to_s).include?(genre.id.to_s), id: "filter_genre_#{genre.id}" %>
+          <label class="flex items-center gap-2 text-sm text-gray-700" id="filter_genre_<%= genre.id %>">
+            <%= check_box_tag "genre_ids[]", genre.id, Array(@filter_params[:genre_ids]).map(&:to_s).include?(genre.id.to_s), id: "filter_genre_checkbox_#{genre.id}" %>
             <%= genre.name %>
           </label>
         <% end %>
       </div>
+      <%= form_with url: genres_path, class: "mt-2" do %>
+        <div class="flex gap-1">
+          <%= text_field_tag "genre[name]", nil, placeholder: "New genre", id: "genre_add_input", class: "flex-1 border-gray-300 rounded text-sm px-2 py-1" %>
+          <%= submit_tag "Add", class: "bg-indigo-600 text-white px-2 py-1 rounded text-sm hover:bg-indigo-700 cursor-pointer" %>
+        </div>
+        <div id="genre_error"></div>
+      <% end %>
     </div>
 
     <div>

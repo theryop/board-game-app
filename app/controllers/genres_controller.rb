@@ -12,9 +12,15 @@ class GenresController < ApplicationController
   def create
     @genre = Genre.new(genre_params)
     if @genre.save
-      redirect_to genres_path, notice: "Genre created."
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to genres_path, notice: "Genre created." }
+      end
     else
-      render :new, status: :unprocessable_content
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("genre_error", partial: "genres/error", locals: { genre: @genre }) }
+        format.html { render :new, status: :unprocessable_content }
+      end
     end
   end
 
