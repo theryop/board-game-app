@@ -111,7 +111,12 @@
         <tbody class="divide-y divide-gray-200">
           <% @games.each do |game| %>
             <tr class="hover:bg-gray-50">
-              <td class="px-4 py-3 font-medium text-gray-900"><%= game.name %></td>
+              <td class="px-4 py-3 font-medium text-gray-900">
+                <%= game.name %>
+                <% if game.base_game %>
+                  <div class="text-xs text-gray-400 font-normal">Expansion of <%= game.base_game.name %></div>
+                <% end %>
+              </td>
               <td class="px-4 py-3 text-gray-600"><%= game.complexity %></td>
               <td class="px-4 py-3 text-gray-600"><%= game.enjoyment %></td>
               <td class="px-4 py-3 text-gray-600"><%= game.times_played %></td>

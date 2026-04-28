@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_02_080607) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_28_055440) do
   create_table "game_genres", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "game_id", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_080607) do
   end
 
   create_table "games", force: :cascade do |t|
+    t.integer "base_game_id"
     t.string "bgg_url"
     t.integer "complexity"
     t.integer "condition"
@@ -45,4 +46,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_080607) do
 
   add_foreign_key "game_genres", "games"
   add_foreign_key "game_genres", "genres"
+  add_foreign_key "games", "games", column: "base_game_id"
 end
