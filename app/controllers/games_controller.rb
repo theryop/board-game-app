@@ -1,9 +1,10 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[edit update destroy]
   before_action :set_genres, only: %i[new create edit update]
+  before_action :set_base_games, only: %i[new create edit update]
 
   def index
-    @filter_params = params.permit(:sort, :direction, :condition, :genre_mode, :player_count, :max_playtime, :complexity, :enjoyment, genre_ids: []).to_h.symbolize_keys
+    @filter_params = params.permit(:sort, :direction, :condition, :genre_mode, :player_count, :max_playtime, :complexity, :enjoyment, :game_type, genre_ids: []).to_h.symbolize_keys
     @games = GameFilter.new(@filter_params).results
     @genres = Genre.order(:name)
   end
@@ -47,11 +48,15 @@ class GamesController < ApplicationController
     @genres = Genre.alphabetical_name
   end
 
+  def set_base_games
+    @base_games = Game.base_games.order(:name)
+  end
+
   def game_params
     params.require(:game).permit(
       :name, :min_players, :max_players, :description,
       :times_played, :bgg_url, :condition, :complexity,
-      :min_playtime, :max_playtime, :enjoyment, genre_ids: []
+      :min_playtime, :max_playtime, :enjoyment, :base_game_id, genre_ids: []
     )
   end
 end

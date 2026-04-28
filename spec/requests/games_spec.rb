@@ -10,6 +10,17 @@ RSpec.describe "Games", type: :request do
       expect(response).to redirect_to(games_path)
     end
 
+    it "creates an expansion associated to a base game" do
+      base = create(:game, name: "Catan")
+
+      expect {
+        post "/games", params: { game: { name: "Catan: Seafarers", base_game_id: base.id } }
+      }.to change(Game, :count).by(1)
+
+      expansion = Game.find_by(name: "Catan: Seafarers")
+      expect(expansion.base_game).to eq(base)
+    end
+
     it "does not create a game when name is missing" do
       expect {
         post "/games", params: { game: { name: "" } }
@@ -38,6 +49,17 @@ RSpec.describe "Games", type: :request do
 
       expect(response.body).to include('name="genre[name]"')
       expect(response.body).to include('name="context"')
+    end
+
+    it "renders a Base game dropdown listing only base games" do
+      base = create(:game, name: "Catan")
+      expansion = create(:game, name: "Catan: Seafarers", base_game_id: base.id)
+
+      get "/games/new"
+
+      expect(response.body).to include('name="game[base_game_id]"')
+      expect(response.body).to include("Catan")
+      expect(response.body).not_to include("Catan: Seafarers")
     end
 
     it "renders a delete button next to each genre in the game form" do
@@ -270,6 +292,15 @@ RSpec.describe "Games", type: :request do
 
       expect(response.body).to include("Alpha")
       expect(response.body).to include("Beta")
+    end
+
+    it "shows an expansion indicator on expansion rows" do
+      base = create(:game, name: "Catan")
+      create(:game, name: "Catan: Seafarers", base_game_id: base.id)
+
+      get "/games", params: { game_type: "all" }
+
+      expect(response.body).to include("Expansion of Catan")
     end
 
     it "renders the add-genre form in the filter panel" do
