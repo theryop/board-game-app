@@ -110,11 +110,11 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <% @games.each do |game| %>
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50 align-middle">
               <td class="px-4 py-3 font-medium text-gray-900">
                 <%= game.name %>
                 <% if game.base_game %>
-                  <div class="text-xs text-gray-400 font-normal">Expansion of <%= game.base_game.name %></div>
+                  <span style="font-size:10px" class="block mt-1 font-normal text-indigo-500 bg-indigo-50 rounded px-1.5 py-0.5">(expansion of <%= game.base_game.name %>)</span>
                 <% end %>
               </td>
               <td class="px-4 py-3 text-gray-600"><%= game.complexity %></td>
@@ -129,9 +129,11 @@
                   <%= link_to "BGG", game.bgg_url, target: "_blank", rel: "noopener", class: "text-indigo-600 hover:underline" %>
                 <% end %>
               </td>
-              <td class="px-4 py-3 flex gap-3 text-sm">
-                <%= link_to "Edit", edit_game_path(game), class: "text-indigo-600 hover:underline" %>
-                <%= button_to "Delete", game_path(game), method: :delete, class: "text-red-600 hover:underline bg-transparent border-0 p-0 cursor-pointer", data: { turbo_confirm: "Delete #{game.name}?" } %>
+              <td class="px-4 py-3 text-sm align-middle">
+                <div class="flex gap-3">
+                  <%= link_to "Edit", edit_game_path(game), class: "text-indigo-600 hover:underline" %>
+                  <%= button_to "Delete", game_path(game), method: :delete, class: "text-red-600 hover:underline bg-transparent border-0 p-0 cursor-pointer", data: { turbo_confirm: "Delete #{game.name}?" } %>
+                </div>
               </td>
             </tr>
           <% end %>
